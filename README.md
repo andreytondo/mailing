@@ -1,60 +1,34 @@
-# mailer-quickstart
+# Sistema de Envio de Emails com Quarkus
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+---
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## **Visão Geral**
+Este projeto demonstra um sistema simples de envio de emails utilizando Quarkus. Ele suporta o envio de emails com anexos opcionais através de um servidor SMTP. O sistema segue um design modular, facilitando a extensão ou troca para outros serviços de envio de emails.
 
-## Running the application in dev mode
+---
 
-You can run your application in dev mode that enables live coding using:
+## **Funcionalidades**
+- **Suporte a Anexos**: Permite o envio de emails com anexos.
+- **Campo Dinâmico**: O campo `from` é configurável; entretanto, muitos servidores SMTP sobrescrevem este campo e utilizam o endereço de email do usuário autenticado.
 
-```shell script
-./mvnw quarkus:dev
+---
+
+## **Como Funciona**
+
+1. **Controller**: Expõe um endpoint REST (`/mail/send`) para envio de emails.
+3. **Integração com o Mailer**: Utiliza o `io.quarkus.mailer.Mailer` do Quarkus para interagir com o servidor SMTP.
+
+---
+
+## **Exemplo de Requisição**
+
+```bash
+curl -X POST http://localhost:8080/mail/send \
+-H "Content-Type: application/json" \
+-d '{
+  "from": "remetente@teste.com",
+  "recipient": "andreytondo@alunos.utfpr.edu.br",
+  "subject": "Titulo",
+  "content": "Conteudo"
+}'
 ```
-
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
-
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
-```
-
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/mailer-quickstart-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- Qute ([guide](https://quarkus.io/guides/qute)): Offer templating support for web, email, etc in a build time, type-safe way
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- Mailer ([guide](https://quarkus.io/guides/mailer)): Send emails
